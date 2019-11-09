@@ -9,6 +9,7 @@ jobs:
     name: Build
     env:
       RUST_VERSION: ${matrix.rust-version}
+      RUST_TOOLCHAIN: ${matrix.toolchain}
     strategy:
       fail-fast: false
       matrix:
