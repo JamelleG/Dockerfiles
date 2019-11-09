@@ -8,8 +8,8 @@ jobs:
     runs-on: ubuntu-18.04
     name: Build
     env:
-      RUST_VERSION: ${matrix.rust-version}
-      RUST_TOOLCHAIN: ${matrix.toolchain}
+      RUST_VERSION: ${{ matrix.rust-version }}
+      RUST_TOOLCHAIN: ${{ matrix.toolchain }}
     strategy:
       fail-fast: false
       matrix:
