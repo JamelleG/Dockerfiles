@@ -1,0 +1,37 @@
+name: Build Rusty Images
+on:
+  push:
+    branches:
+      - master
+jobs:
+  build:
+    runs-on: ubuntu-18.04
+    name: Build
+    env:
+      RUST_VERSION: ${matrix.rust-version}
+    strategy:
+      fail-fast: false
+      matrix:
+        rust-version: ["1.38.0", "1.39.0"]
+        toolchain: ["nightly", "stable", "beta"]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v1
+        with:
+          fetch-depth: 1
+      - name: Prepare Dockerfile
+        run: |
+          sed -i -e s/{RUST_VERSION}/$RUST_VERSION/g ./Dockerfiles
+          sed -i -e s/{RUST_TOOLCHAIN}/$RUST_TOOLCHAIN/g ./Dockerfiles
+
+      - name: Docker Login
+        run: docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD" $DOCKER_REGISTRY
+        env:
+          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+          DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+          DOCKER_REGISTRY: ${{ secrets.DOCKER_REGISTRY}}
+
+      - name: Image Build
+        run: docker build -t jamelleg/rust:$RUST_VERSION-{$TOOLCHAIN} .
+      - name: Image Publish
+        run: docker push jamelleg/rust:$RUST_VERSION-{$TOOLCHAIN}
