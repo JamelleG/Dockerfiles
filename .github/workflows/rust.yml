@@ -22,8 +22,8 @@ jobs:
           fetch-depth: 1
       - name: Prepare Dockerfile
         run: |
-          sed -i -e s/{RUST_VERSION}/$RUST_VERSION/g ./rust/Dockerfiles
-          sed -i -e s/{RUST_TOOLCHAIN}/$RUST_TOOLCHAIN/g ./rust/Dockerfiles
+          sed -i -e s/{RUST_VERSION}/$RUST_VERSION/g ./rust/Dockerfile
+          sed -i -e s/{RUST_TOOLCHAIN}/$RUST_TOOLCHAIN/g ./rust/Dockerfile
 
       - name: Docker Login
         run: docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD" $DOCKER_REGISTRY
