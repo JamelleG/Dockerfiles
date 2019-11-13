@@ -33,6 +33,6 @@ jobs:
           DOCKER_REGISTRY: ${{ secrets.DOCKER_REGISTRY}}
 
       - name: Image Build
-        run: docker build -t jamelleg/rust:$RUST_VERSION-$RUST_TOOLCHAIN ./rust
+        run: docker build -t $DOCKER_REGISTRY/jamelleg/rust:$RUST_VERSION-$RUST_TOOLCHAIN ./rust
       - name: Image Publish
-        run: docker push jamelleg/rust:$RUST_VERSION-$RUST_TOOLCHAIN
+        run: docker push $DOCKER_REGISTRY/jamelleg/rust:$RUST_VERSION-$RUST_TOOLCHAIN
