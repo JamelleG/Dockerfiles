@@ -8,5 +8,3 @@ RUN useradd -g 61000 -l -M -s /bin/false -u 61000 ferris
 RUN mkdir -p /var/www; chown -R ferris:ferris /var/www
 USER ferris
 
-
-VOLUME ["/usr/local/cargo","/var/www/target"]
