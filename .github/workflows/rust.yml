@@ -13,7 +13,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        rust-version: ["1.38.0", "1.39.0"]
+        rust-version: ["1.38.0", "1.39.0","1.40.0","1.41.0"]
         toolchain: ["nightly", "stable", "beta"]
     steps:
       - name: Checkout
