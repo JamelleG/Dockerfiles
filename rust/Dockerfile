@@ -1,6 +1,7 @@
 FROM rust:{RUST_VERSION}
 RUN rustup toolchain uninstall stable
 RUN rustup toolchain install {RUST_TOOLCHAIN} && rustup component add --toolchain {RUST_TOOLCHAIN} rustfmt
+RUN cargo install watchexec 
 WORKDIR /var/www
 EXPOSE 3001
 RUN groupadd -g 61000 ferris 
