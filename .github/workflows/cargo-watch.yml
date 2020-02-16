@@ -1,0 +1,33 @@
+name: Build Rusty Images
+on:
+  push:
+    branches:
+      - master
+jobs:
+  build:
+    runs-on: ubuntu-18.04
+    name: Build
+    env:
+    strategy:
+      fail-fast: false
+      matrix:
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v1
+        with:
+          fetch-depth: 1
+      - name: Docker Login
+        run: docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD" $DOCKER_REGISTRY
+        env:
+          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+          DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+          DOCKER_REGISTRY: ${{ secrets.DOCKER_REGISTRY}}
+
+      - name: Image Build
+        run: docker build -t $DOCKER_REGISTRY/jamelleg/dockerfiles/cargo-watch ./rust
+        env:
+          DOCKER_REGISTRY: ${{ secrets.DOCKER_REGISTRY}}
+      - name: Image Publish
+        run: docker push $DOCKER_REGISTRY/jamelleg/dockerfiles/cargo-watch
+        env:
+          DOCKER_REGISTRY: ${{ secrets.DOCKER_REGISTRY}}
