@@ -1,4 +1,4 @@
-FROM rust:{RUST_VERSION}-{DOCKER_TYPE}
+FROM rust:{RUST_VERSION}{DOCKER_TYPE}
 RUN rustup toolchain uninstall $(rustup default)
 RUN rustup toolchain install {RUST_TOOLCHAIN}
 RUN cargo install watchexec 
