@@ -16,7 +16,7 @@ jobs:
       matrix:
         rust-version: ["1.40.0","1.41.0"]
         toolchain: ["stable", "beta"]
-        docker-type: ["-","-slim-buster","-buster"]
+        docker-type: ["","-slim-buster","-buster"]
     steps:
       - name: Checkout
         uses: actions/checkout@v1
