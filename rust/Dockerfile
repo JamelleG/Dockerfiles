@@ -1,6 +1,7 @@
 FROM rust:{RUST_VERSION}{DOCKER_TYPE}
 RUN rustup toolchain uninstall $(rustup default)
 RUN rustup toolchain install {RUST_TOOLCHAIN}
+RUN rustup default {RUST_TOOLCHAIN}
 RUN cargo install watchexec 
 WORKDIR /var/www
 EXPOSE 3001
