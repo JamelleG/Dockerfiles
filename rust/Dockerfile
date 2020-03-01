@@ -1,5 +1,5 @@
-FROM rust:{RUST_VERSION}
-RUN rustup toolchain uninstall stable
+FROM rust:{RUST_VERSION}-{DOCKER_TYPE}
+RUN rustup toolchain uninstall $(rustup default)
 RUN rustup toolchain install {RUST_TOOLCHAIN}
 RUN cargo install watchexec 
 WORKDIR /var/www

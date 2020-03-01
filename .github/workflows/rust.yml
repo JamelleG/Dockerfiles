@@ -10,11 +10,13 @@ jobs:
     env:
       RUST_VERSION: ${{ matrix.rust-version }}
       RUST_TOOLCHAIN: ${{ matrix.toolchain }}
+      DOCKER_TYPE: ${{ matrix.docker-type}}
     strategy:
       fail-fast: false
       matrix:
         rust-version: ["1.40.0","1.41.0"]
-        toolchain: ["nightly", "stable", "beta"]
+        toolchain: ["stable", "beta"]
+        docker-type: ["","slim-buster","buster"]
     steps:
       - name: Checkout
         uses: actions/checkout@v1
@@ -24,6 +26,7 @@ jobs:
         run: |
           sed -i -e s/{RUST_VERSION}/$RUST_VERSION/g ./rust/Dockerfile
           sed -i -e s/{RUST_TOOLCHAIN}/$RUST_TOOLCHAIN/g ./rust/Dockerfile
+          sed -i -e s/{DOCKER_TYPE}/$DOCKER_TYPE/g ./rust/Dockerfile
 
       - name: Docker Login
         run: docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD" $DOCKER_REGISTRY
