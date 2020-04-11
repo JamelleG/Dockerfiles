@@ -1,0 +1,42 @@
+name: Build Nodey Images
+on:
+  push:
+    branches:
+      - master
+jobs:
+  build:
+    runs-on: ubuntu-18.04
+    name: Build
+    env:
+      NODE_VERSION: ${{ matrix.node-version }}
+      DOCKER_TYPE: ${{ matrix.docker-type}}
+    strategy:
+      fail-fast: false
+      matrix:
+        node-version: ["10", "11","12","13"]
+        docker-type: ["", "-alpine"]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v1
+        with:
+          fetch-depth: 1
+      - name: Prepare Dockerfile
+        run: |
+          sed -i -e s/{NODE_VERSION}/$NODE_VERSION/g ./node/Dockerfile
+          sed -i -e s/{DOCKER_TYPE}/$DOCKER_TYPE/g ./node/Dockerfile
+
+      - name: Docker Login
+        run: docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD" $DOCKER_REGISTRY
+        env:
+          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+          DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+          DOCKER_REGISTRY: ${{ secrets.DOCKER_REGISTRY}}
+
+      - name: Image Build
+        run: docker build -t $DOCKER_REGISTRY/jamelleg/dockerfiles/node:${NODE_VERSION}${DOCKER_TYPE}
+        env:
+          DOCKER_REGISTRY: ${{ secrets.DOCKER_REGISTRY}}
+      - name: Image Publish
+        run: docker push $DOCKER_REGISTRY/jamelleg/dockerfiles/node:${NODE_VERSION}${DOCKER_TYPE}
+        env:
+          DOCKER_REGISTRY: ${{ secrets.DOCKER_REGISTRY}}
