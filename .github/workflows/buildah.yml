@@ -7,7 +7,6 @@ jobs:
   build:
     runs-on: ubuntu-18.04
     name: Build
-    env:
     strategy:
       fail-fast: false
     steps:
