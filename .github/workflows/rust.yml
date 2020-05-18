@@ -18,11 +18,6 @@ jobs:
         toolchain: ["stable", "beta"]
         docker-type: ["","-slim-buster","-buster"]
     steps:
-      - name: Docker Experimental
-        run: | 
-          echo '{"experimental": true}' | sudo tee -a /etc/docker/daemon.json
-          sudo service docker restart
-          docker version -f '{{.Server.Experimental}}'  
       - name: Checkout
         uses: actions/checkout@v1
         with:
