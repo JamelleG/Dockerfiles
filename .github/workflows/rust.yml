@@ -36,10 +36,10 @@ jobs:
           DOCKER_REGISTRY: ${{ secrets.DOCKER_REGISTRY}}
 
       - name: Image Build
-        run: docker build -t ${DOCKER_REGISTRY}/jamelleg/dockerfiles/rust:${RUST_VERSION}-${RUST_TOOLCHAIN}${DOCKER_TYPE} ./rust
+        run: docker build -t ${DOCKER_REGISTRY}/jamelleg/rusty:${RUST_VERSION}-${RUST_TOOLCHAIN}${DOCKER_TYPE} ./rust
         env:
           DOCKER_REGISTRY: ${{ secrets.DOCKER_REGISTRY}}
       - name: Image Publish
-        run: docker push ${DOCKER_REGISTRY}/jamelleg/dockerfiles/rust:${RUST_VERSION}-${RUST_TOOLCHAIN}${DOCKER_TYPE}
+        run: docker push ${DOCKER_REGISTRY}/jamelleg/rusty:${RUST_VERSION}-${RUST_TOOLCHAIN}${DOCKER_TYPE}
         env:
           DOCKER_REGISTRY: ${{ secrets.DOCKER_REGISTRY}}
