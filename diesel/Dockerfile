@@ -15,7 +15,7 @@ COPY --from=builder /usr/local/cargo/bin/diesel /bin/
 
 RUN apk add --no-cache ca-certificates
 
-RUN apk add libpq mysql-dev sqlite-dev 
+RUN apk add libpq mysql-dev sqlite-dev && rm -rf /var/cache/apk/* 
 
 WORKDIR /var/www
 
