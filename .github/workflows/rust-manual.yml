@@ -1,4 +1,4 @@
-name: Build Rusty Images
+name: Build Rusty Images (Manual)
 on: 
   workflow_dispatch:
     inputs:
