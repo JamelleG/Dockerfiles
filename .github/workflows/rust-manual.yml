@@ -1,0 +1,43 @@
+name: Build Rusty Images
+on: 
+  workflow_dispatch:
+    inputs:
+      rust-version:
+        description: Rust Version 
+        required: true 
+jobs:
+  build:
+    runs-on: ubuntu-18.04
+    name: Build
+    env:
+      RUST_VERSION: ${{ github.event.inputs.rust-version }}
+      DOCKER_TYPE: ${{ matrix.docker-type}}
+    strategy:
+      fail-fast: false
+      matrix:
+        docker-type: ["","-slim-buster","-buster"]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v1
+        with:
+          fetch-depth: 1
+      - name: Prepare Dockerfile
+        run: |
+          sed -i -e s/{RUST_VERSION}/$RUST_VERSION/g ./rust/Dockerfile
+          sed -i -e s/{DOCKER_TYPE}/$DOCKER_TYPE/g ./rust/Dockerfile
+
+      - name: Docker Login
+        run: docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD" $DOCKER_REGISTRY
+        env:
+          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+          DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+          DOCKER_REGISTRY: ${{ secrets.DOCKER_REGISTRY}}
+
+      - name: Image Build
+        run: docker build -t ${DOCKER_REGISTRY}/jamelleg/rusty:${RUST_VERSION}${DOCKER_TYPE} ./rust
+        env:
+          DOCKER_REGISTRY: ${{ secrets.DOCKER_REGISTRY}}
+      - name: Image Publish
+        run: docker push ${DOCKER_REGISTRY}/jamelleg/rusty:${RUST_VERSION}${DOCKER_TYPE}
+        env:
+          DOCKER_REGISTRY: ${{ secrets.DOCKER_REGISTRY}}
