@@ -15,7 +15,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        rust-version: ["1.44.0"]
+        rust-version: ["1.47.0","1.46.0","1.45.2"]
         docker-type: ["","-slim-buster","-buster"]
     steps:
       - name: Checkout
